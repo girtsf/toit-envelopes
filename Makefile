@@ -27,6 +27,8 @@ TOOL_ENTRY := tools/main.toit
 TOOL_RUN := "$(TOIT_EXEC)" "$(TOOL_ENTRY)"
 
 TOIT_GIT_URL ?= https://github.com/toitlang/toit.git
+# Set to e.g. 1 for a shallow clone of Toit and its submodules (faster in CI).
+TOIT_FETCH_DEPTH ?=
 
 .PHONY: all
 all:
@@ -40,12 +42,19 @@ download-toit: | check-toit-version create-toit-directory
 		git init; \
 		git remote add origin "$(TOIT_GIT_URL)"; \
 	fi
+ifeq ($(TOIT_FETCH_DEPTH),)
 	@# Fetch.
 	(cd "$(TOIT_DIRECTORY)" && git fetch origin)
 	@# Checkout the version of the toit repo that we want to use, and initialize
 	@# the submodules.
 	(cd "$(TOIT_DIRECTORY)" && git checkout "${TOIT_VERSION}")
 	(cd "$(TOIT_DIRECTORY)" && git submodule update --init --recursive)
+else
+	@# TOIT_VERSION may be a tag, a branch or a commit.
+	(cd "$(TOIT_DIRECTORY)" && git fetch --depth $(TOIT_FETCH_DEPTH) origin "${TOIT_VERSION}")
+	(cd "$(TOIT_DIRECTORY)" && git checkout --detach FETCH_HEAD)
+	(cd "$(TOIT_DIRECTORY)" && git submodule update --init --recursive --depth $(TOIT_FETCH_DEPTH) --jobs 16)
+endif
 
 .PHONY: check-toit-version
 check-toit-version:
