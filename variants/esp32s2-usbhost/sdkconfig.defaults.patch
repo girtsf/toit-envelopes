@@ -1,0 +1,7 @@
+--- toit/toolchains/esp32s2/sdkconfig.defaults
++++ synthesized/esp32s2-usbhost/sdkconfig.defaults
+@@ -57,3 +57,4 @@
+ CONFIG_SPI_FLASH_WARN_SETTING_ZERO_TO_ONE=y
+ CONFIG_WS_TRANSPORT=n
+ CONFIG_TOIT_CRYPTO_EXTRA=y
++CONFIG_TOIT_ENABLE_USB_HOST=y
