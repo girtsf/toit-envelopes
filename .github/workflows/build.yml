@@ -238,7 +238,8 @@ jobs:
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.event.inputs.toit-version }}
-          commit: main
+          commit: ${{ github.sha }}
+          makeLatest: true
 
       - name: Report failed builds
         if: ${{ github.event.inputs.upload-release == 'true' }}
@@ -352,7 +353,8 @@ jobs:
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.event.inputs.toit-version }}
-          commit: main
+          commit: ${{ github.sha }}
+          makeLatest: true
 
   build-cross:
     name: "Build cross - ${{ github.event.inputs.toit-version }}"
@@ -423,7 +425,8 @@ jobs:
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.event.inputs.toit-version }}
-          commit: main
+          commit: ${{ github.sha }}
+          makeLatest: true
 
   release-partition-tables:
     name: "Release partition tables - ${{ github.event.inputs.toit-version }}"
@@ -463,4 +466,5 @@ jobs:
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.event.inputs.toit-version }}
-          commit: main
+          commit: ${{ github.sha }}
+          makeLatest: true
